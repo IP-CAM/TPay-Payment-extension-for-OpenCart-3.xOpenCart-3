@@ -51,7 +51,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label"> {{ entry_tpay_seller_id }}</label>
                             <div class="col-sm-10"><input class="form-control" type="text" size="16" maxlength="16"
-                                                          name="tpay_seller_id" value="{{ tpay_seller_id }}"/>
+                                                          name="payment_tpay_seller_id" value="{{ payment_tpay_seller_id }}"/>
                                 {% if error_merchant %}
                                     <span class="error">{{ error_merchant }}</span>
                                 {% endif %}</div>
@@ -61,7 +61,7 @@
                                                                         title="Kod bezpieczeństwa znajduje się w Panelu Odbiorcy Płatności "></span>
                                 {{ entry_tpay_conf_code }}</label>
                             <div class="col-sm-10"><input class="form-control" size="32" maxlength="32"
-                                                          name="tpay_conf_code" value="{{ tpay_conf_code }}"/></div>
+                                                          name="payment_tpay_conf_code" value="{{ payment_tpay_conf_code }}"/></div>
                         </div>
 
                         <div class="form-group">
@@ -71,9 +71,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{ entry_tpay_new_order }}</label>
                             <div class="col-sm-10"><select class="form-control"
-                                                           name="tpay_order_status_new">
+                                                           name="payment_tpay_order_status_new">
                                     {% for order_status in order_statuses %}
-                                    <option value="{{order_status.order_status_id}}" {% if order_status.order_status_id == tpay_order_status_new %} selected="selected"{% endif %}>{{ order_status.name }}</option>
+                                    <option value="{{order_status.order_status_id}}" {% if order_status.order_status_id == payment_tpay_order_status_new %} selected="selected"{% endif %}>{{ order_status.name }}</option>
                                     {% endfor %}</select></div>
                         </div>
 
@@ -81,25 +81,25 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{ entry_tpay_order_status_error }}</label>
                             <div class="col-sm-10"><select class="form-control"
-                                                           name="tpay_order_status_error">                                    {% for order_status in order_statuses %}
-                                        <option value="{{order_status.order_status_id}}" {% if order_status.order_status_id == tpay_order_status_error %} selected="selected"{% endif %}>{{ order_status.name }}</option>
+                                                           name="payment_tpay_order_status_error">                                    {% for order_status in order_statuses %}
+                                        <option value="{{order_status.order_status_id}}" {% if order_status.order_status_id == payment_tpay_order_status_error %} selected="selected"{% endif %}>{{ order_status.name }}</option>
                                     {% endfor %}</select></div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{ entry_tpay_order_status_completed }}</label>
                             <div class="col-sm-10"><select class="form-control"
-                                                           name="tpay_order_status_completed">{% for order_status in order_statuses %}
-                                        <option value="{{order_status.order_status_id}}" {% if order_status.order_status_id == tpay_order_status_completed %} selected="selected"{% endif %}>{{ order_status.name }}</option>
+                                                           name="payment_tpay_order_status_completed">{% for order_status in order_statuses %}
+                                        <option value="{{order_status.order_status_id}}" {% if order_status.order_status_id == payment_tpay_order_status_completed %} selected="selected"{% endif %}>{{ order_status.name }}</option>
                                     {% endfor %}</select></div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{ entry_tpay_currency }} </label>
                             <div class="col-sm-10">
-                                <select name="tpay_currency" class="form-control" id="tpay_currency">
+                                <select name="payment_tpay_currency" class="form-control" id="tpay_currency">
                                     {% for name in curr %}
-                                        <option value="{{ name }}" {%  if name == tpay_currency %} selected="selected" {% endif %}>{{ name }}</option>
+                                        <option value="{{ name }}" {%  if name == payment_tpay_currency %} selected="selected" {% endif %}>{{ name }}</option>
                                     {% endfor %}
                                 </select></div>
                         </div>

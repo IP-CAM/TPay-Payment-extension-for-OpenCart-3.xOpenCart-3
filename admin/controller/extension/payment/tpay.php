@@ -57,9 +57,9 @@ class ControllerExtensionPaymentTpay extends Controller
 		$data['entry_tpay_payment_view_0'] = $this->language->get('entry_tpay_payment_view_0');
 		$data['entry_tpay_payment_view_1'] = $this->language->get('entry_tpay_payment_view_1');
 
-		$data['tpay_order_status_error'] = (isset($this->request->post['tpay_order_status_error']) ? $this->request->post['tpay_order_status_error'] : $this->config->get('tpay_order_status_error'));
-		$data['tpay_order_status_completed'] = (isset($this->request->post['tpay_order_status_completed']) ? $this->request->post['tpay_order_status_completed'] : $this->config->get('tpay_order_status_completed'));
-		$data['tpay_order_status_new'] = (isset($this->request->post['tpay_order_status_new']) ? $this->request->post['tpay_order_status_new'] : $this->config->get('tpay_order_status_new'));
+		$data['payment_tpay_order_status_error'] = (isset($this->request->post['payment_tpay_order_status_error']) ? $this->request->post['payment_tpay_order_status_error'] : $this->config->get('payment_tpay_order_status_error'));
+		$data['payment_tpay_order_status_completed'] = (isset($this->request->post['payment_tpay_order_status_completed']) ? $this->request->post['payment_tpay_order_status_completed'] : $this->config->get('payment_tpay_order_status_completed'));
+		$data['payment_tpay_order_status_new'] = (isset($this->request->post['payment_tpay_order_status_new']) ? $this->request->post['payment_tpay_order_status_new'] : $this->config->get('payment_tpay_order_status_new'));
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
@@ -86,10 +86,10 @@ class ControllerExtensionPaymentTpay extends Controller
 
 		$data['payment_tpay_status'] = (isset($this->request->post['payment_tpay_status']) ? $this->request->post['payment_tpay_status'] : $this->config->get('payment_tpay_status'));
 		$data['payment_tpay_sort_order'] = (isset($this->request->post['payment_tpay_sort_order']) ? $this->request->post['payment_tpay_sort_order'] : $this->config->get('payment_tpay_sort_order'));
-		$data['tpay_seller_id'] = (isset($this->request->post['tpay_seller_id']) ? $this->request->post['tpay_seller_id'] : $this->config->get('tpay_seller_id'));
-		$data['tpay_conf_code'] = (isset($this->request->post['tpay_conf_code']) ? $this->request->post['tpay_conf_code'] : $this->config->get('tpay_conf_code'));
-		$data['tpay_payment_place'] = (isset($this->request->post['tpay_payment_place']) ? $this->request->post['tpay_payment_place'] : $this->config->get('tpay_payment_place'));
-		$data['tpay_payment_view'] = (isset($this->request->post['tpay_payment_view']) ? $this->request->post['tpay_payment_view'] : $this->config->get('tpay_payment_view'));
+		$data['payment_tpay_seller_id'] = (isset($this->request->post['payment_tpay_seller_id']) ? $this->request->post['payment_tpay_seller_id'] : $this->config->get('payment_tpay_seller_id'));
+		$data['payment_tpay_conf_code'] = (isset($this->request->post['payment_tpay_conf_code']) ? $this->request->post['payment_tpay_conf_code'] : $this->config->get('payment_tpay_conf_code'));
+		$data['payment_tpay_payment_place'] = (isset($this->request->post['payment_tpay_payment_place']) ? $this->request->post['payment_tpay_payment_place'] : $this->config->get('payment_tpay_payment_place'));
+		$data['payment_tpay_payment_view'] = (isset($this->request->post['payment_tpay_payment_view']) ? $this->request->post['payment_tpay_payment_view'] : $this->config->get('payment_tpay_payment_view'));
 
 		$this->load->model('localisation/currency');
 
@@ -101,7 +101,7 @@ class ControllerExtensionPaymentTpay extends Controller
 		}
 
 
-		$data['tpay_currency'] = (isset($this->request->post['tpay_currency']) ? $this->request->post['tpay_currency'] : $this->config->get('tpay_currency'));
+		$data['payment_tpay_currency'] = (isset($this->request->post['payment_tpay_currency']) ? $this->request->post['payment_tpay_currency'] : $this->config->get('payment_tpay_currency'));
 
 		$this->load->model('localisation/order_status');
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
@@ -111,14 +111,15 @@ class ControllerExtensionPaymentTpay extends Controller
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 		$this->response->setOutput($this->load->view('extension/payment/tpay', $data));
+
 	}
 
 	private function validate()
 	{
 		if (!$this->user->hasPermission('modify', 'extension/payment/tpay')) $this->error['warning'] = $this->language->get('error_permission');
 
-		if (!$this->request->post['tpay_seller_id']) $this->error['merchant'] = $this->language->get('error_merchant');
-		return (!$this->error ? true : false);
+		if (empty($this->request->post['payment_tpay_seller_id'])) $this->error['merchant'] = $this->language->get('error_merchant');
+		return $this->error ? false : true;
 
 	}
 }

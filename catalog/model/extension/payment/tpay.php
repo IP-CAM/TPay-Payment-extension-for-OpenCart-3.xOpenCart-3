@@ -7,7 +7,7 @@ class ModelExtensionPaymentTpay extends Model
         $this->load->language('extension/payment/tpay');
 
         $this->config->get('payment_tpay_status') && $total >= 0.00
-        && $this->session->data['currency'] == $this->config->get('tpay_currency')
+        && $this->session->data['currency'] == $this->config->get('payment_tpay_currency')
             ? $status = true : $status = false;
 
         $method_data = array();

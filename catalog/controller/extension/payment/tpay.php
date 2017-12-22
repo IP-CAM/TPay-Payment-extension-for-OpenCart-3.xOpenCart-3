@@ -34,9 +34,9 @@ class ControllerExtensionPaymentTpay extends Controller {
         if ($order_data['language_code'] == 'pl' || $order_data['language_code'] == 'pl-pl') {
             Lang::setLang('pl');
         }
-        $data['tpay_payment_place'] = $this->config->get('tpay_payment_place');
-        $data['tpay_payment_view'] = $this->config->get('tpay_payment_view');
-        $data['seller_id']= $this->config->get('tpay_seller_id');
+        $data['tpay_payment_place'] = $this->config->get('payment_tpay_payment_place');
+        $data['tpay_payment_view'] = $this->config->get('payment_tpay_payment_view');
+        $data['seller_id']= $this->config->get('payment_tpay_seller_id');
         $data['form'] = '';
         $data['show_regulations_checkbox'] = false;
         $data['merchant_id'] = (int)$data['seller_id'];
@@ -58,11 +58,11 @@ class ControllerExtensionPaymentTpay extends Controller {
         $order_data = $this->model_checkout_order->getOrder($this->session->data['order_id']);
         $this->id = 'payment';
         $note = $this->language->get('text_new_order');
-        $this->model_checkout_order->addOrderHistory($order_data['order_id'], $this->config->get('tpay_order_status_new'), $note, TRUE);
+        $this->model_checkout_order->addOrderHistory($order_data['order_id'], $this->config->get('payment_tpay_order_status_new'), $note, TRUE);
 
-        $tpay_currency = $this->config->get('tpay_currency');
-        $tpay_seller_id = $this->config->get('tpay_seller_id');
-        $tpay_conf_code = $this->config->get('tpay_conf_code');
+        $tpay_currency = $this->config->get('payment_tpay_currency');
+        $tpay_seller_id = $this->config->get('payment_tpay_seller_id');
+        $tpay_conf_code = $this->config->get('payment_tpay_conf_code');
         $formHandler = new TpayBasicExample ($tpay_conf_code, (int)$tpay_seller_id);
         $crc = base64_encode($order_data['order_id']);
 
@@ -99,21 +99,20 @@ class ControllerExtensionPaymentTpay extends Controller {
 
     public function validate() {
 
-        $tpay_seller_id = $this->config->get('tpay_seller_id');
-        $tpay_conf_code = $this->config->get('tpay_conf_code');
+        $tpay_seller_id = $this->config->get('payment_tpay_seller_id');
+        $tpay_conf_code = $this->config->get('payment_tpay_conf_code');
         $handler = new \tpayLibs\examples\TransactionNotification($tpay_conf_code, (int)$tpay_seller_id);
         $data = $handler->checkPayment();
 
         $note='';
-        $order_id = base64_decode($data['tr_crc']);
+        $order_id = (int)base64_decode($data['tr_crc']);
         $tr_status = $data['tr_status'];
         $tr_id = $data['tr_id'];
 
         $this->load->model('checkout/order');
         $this->load->language('payment/tpay');
-
         $order_data = $this->model_checkout_order->getOrder($order_id);
-        $completed_status = $this->config->get('tpay_order_status_completed');
+        $completed_status = $this->config->get('payment_tpay_order_status_completed');
 
         $current_status = $order_data['order_status_id'];
 
@@ -127,11 +126,11 @@ class ControllerExtensionPaymentTpay extends Controller {
 
         if ($tr_status == 'TRUE') {
 
-            $this->model_checkout_order->addOrderHistory($order_data['order_id'], $this->config->get('tpay_order_status_completed'), $note, TRUE);
+            $this->model_checkout_order->addOrderHistory($order_data['order_id'], $this->config->get('payment_tpay_order_status_completed'), $note, TRUE);
 
         } elseif ($tr_status == 'FALSE') {
 
-            $this->model_checkout_order->addOrderHistory($order_data['order_id'], $this->config->get('tpay_order_status_error'), $note, TRUE);
+            $this->model_checkout_order->addOrderHistory($order_data['order_id'], $this->config->get('payment_tpay_order_status_error'), $note, TRUE);
         }
         return true;
     }
